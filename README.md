@@ -1,22 +1,3 @@
-# CROCO 
+# MARCO (Marine and Regional Coastal Ocean) Model)
 
-CROCO is an oceanic modeling system built upon ROMS_AGRIF and maintained 
-by IRD, INRIA, CNRS, IFREMER and SHOM, French institutes working on 
-environmental sciences and applied mathematics. An important objective for 
-CROCO is to resolve very fine scales (especially in the coastal area), and 
-their interactions with larger scales. It includes new capabilities such as 
-a non-hydrostatic solver, ocean-wave-atmosphere coupling, evolving sediment 
-dynamics and marine biogeochemistry, new high-order numerical schemes for 
-advection and mixing, and a dedicated I/O server (XIOS). 
-
-More informations on the croco website at 
-https://www.croco-ocean.org
-
-We provide separate DOIs (Digital Object Identifier) for the static versions 
-of the code at https://zenodo.org/doi/10.5281/zenodo.7415055
-
-CROCO documentation is available at 
-https://croco-ocean.gitlabpages.inria.fr/croco_doc
-
-You can also subscribe at CROCO forum at 
-https://forum.croco-ocean.org
+MARCO is an oceanic modeling system based on ROMS and CROCO, maintained by Indian and French institutes focused on sustainable development, advanced computing, and applied mathematics. A key objective of MARCO is to resolve processes at very high resolution (metric scale) and understand their interactions with larger-scale phenomena. The system incorporates both non-hydrostatic and hydrostatic solvers, ocean-wave-atmosphere coupling, coupled sediment (CSTM/MARS) and marine biogeochemistry model (PISCES). It utilizes fifth-order high-resolution numerical schemes for advection and mixing, as well as a dedicated I/O server and optimized parallel algorithms.
