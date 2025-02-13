@@ -1,19 +1,19 @@
 #======================================================================
-# CROCO is a branch of ROMS developped at IRD, INRIA, 
-# Ifremer, CNRS and Univ. Toulouse III  in France
+# MARCO is a branch of ROMS developped at IRD, INRIA, 
+# Ifremer, CNRS,  Univ. Toulouse III,  IIT, IISC and Indian Univ.  
 # The two other branches from UCLA (Shchepetkin et al)
 # and Rutgers University (Arango et al) are under MIT/X style license.
-# CROCO specific routines (nesting) are under CeCILL-C license.
+# MARCO specific routines (AGRIF) are under CeCILL-C license.
 #
-# CROCO website : http://www.croco-ocean.org
+# MARCO website : http://xxxx
 #======================================================================
 #
-# Universal machine independent makefile for ROMS model
+# Universal machine independent makefile for MARCO model
 #
 #======================================================================
 # Set machine dependent definitions and rules.
 #======================================================================
-
+VERBOSE ?= 0
 include Makedefs
 #======================================================================
 # Model Configuration:
@@ -183,7 +183,7 @@ AMRDIR = AGRIF/AGRIF_YOURFILES
  OBJS = $(RCS:.f=.o)
  OBJS90 = $(RCS90:.f90=.o)
 
- SBIN = croco
+ SBIN = marco
 
  AMRRCS=$(AMRSRCS:.F=.f)
 
