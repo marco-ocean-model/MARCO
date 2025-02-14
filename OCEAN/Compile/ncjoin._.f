@@ -1108,15 +1108,6 @@
      &                ''' is different than previously determined',
      &                                     code_size_bak, '.'
                   endif
-                  if (k.ne.node) then
-                    ierr=ierr+1
-                    write(*,'(/8x,3A,I3/17x,2A/17x,A,I3,A/)')
-     &                   'WARNING: file ''', nctestname(1:lncn),
-     &                   ''' belongs to different MPI node',   node,
-     &                   '(as determined from its global attribute',
-     &                   '''partition'')', 'than node', k,
-     &                   ' determined from to the file name.'
-                  endif
                   if (ierr.ne.nf_noerr) goto 97
                 else
                   arg=arg-1

@@ -10,13 +10,13 @@
 
 
 !======================================================================
-! CROCO is a branch of ROMS developped at IRD, INRIA, 
-! Ifremer, CNRS and Univ. Toulouse III  in France
+! MARCO is a branch of ROMS/CROCO developped at IRD, INRIA, 
+! Ifremer, CNRS and Univ. Toulouse III, IIT, IISC, Indian Univ.
 ! The two other branches from UCLA (Shchepetkin et al)
 ! and Rutgers University (Arango et al) are under MIT/X style license.
-! CROCO specific routines (nesting) are under CeCILL-C license.
+! MARCO specific routines (AGRIF) are under CeCILL-C license.
 !
-! CROCO website : http://www.croco-ocean.org
+! MARCO website : http://xxxx
 !======================================================================
 !
 
@@ -46,6 +46,7 @@
                       
 
                       
+
 
                       
                       
@@ -64,6 +65,7 @@
                       
                      
                       
+!    Parallel reproducibility test
 !    RVTK test (Restartability or Parallel reproducibility)
 
 
@@ -73,6 +75,8 @@
 
 
 
+                      
+                      
                       
                       
                       
@@ -90,6 +94,12 @@
 ! CROCO website : http://www.croco-ocean.org
 !======================================================================
 !
+
+
+
+
+
+
 
 
 
@@ -459,10 +469,43 @@
 
       integer indxS
       parameter (indxS=indxV+ntrc_temp+1)
+      integer ncidpisrst, nrecpisrst
+      integer ncidsedrst, nrecsedrst
+      integer indxDIC, indxTAL, indxOXY, indxCAL, indxPO4,
+     &        indxPOC, indxSIL, indxPHY, indxZOO, indxDOC,
+     &        indxDIA, indxMES, indxDSI, indxFER, indxBFE,
+     &        indxGOC, indxSFE, indxDFE, indxGSI, indxNFE,
+     &        indxNCH, indxDCH, indxNO3, indxNH4
+      parameter (indxDIC =indxV+ntrc_temp+ntrc_salt+ntrc_pas+1,
+     &           indxTAL =indxDIC+1, indxOXY=indxDIC+2)
+      parameter (indxPOC=indxDIC+3, indxPHY =indxDIC+4,
+     &           indxZOO=indxDIC+5, indxDOC =indxDIC+6,
+     &           indxNO3=indxDIC+7, indxFER =indxDIC+8)
+      integer indxLGW
+      parameter (indxLGW=indxDIC+24)
+      integer indxDON, indxDOP, indxPON, indxPOP, indxNPH,
+     &        indxPPH, indxNDI, indxPDI, indxPIC, indxNPI,
+     &        indxPPI, indxPFE, indxPCH, indxGON, indxGOP
+      parameter (indxDON=indxDIC+25, indxDOP=indxDIC+26,
+     &           indxPON=indxDIC+27, indxPOP=indxDIC+28,
+     &           indxNPH=indxDIC+29, indxPPH=indxDIC+30,
+     &           indxNDI=indxDIC+31, indxPDI=indxDIC+32,
+     &           indxPIC=indxDIC+33, indxNPI=indxDIC+34,
+     &           indxPPI=indxDIC+35, indxPFE=indxDIC+36,
+     &           indxPCH=indxDIC+37, indxGON=indxDIC+38,
+     &           indxGOP=indxDIC+39)
 
       integer indxBSD, indxBSS
       parameter (indxBSD=indxV+ntrc_temp+ntrc_salt+ntrc_pas+ntrc_bio+1,
      &           indxBSS=101)
+
+      integer indxbioFlux, indxbioVSink
+      parameter (indxbioFlux=indxV+ntrc_temp+ntrc_salt
+     &                           +ntrc_pas+ntrc_bio+ntrc_sed
+     &                           +ntrc_diats+ntrc_diauv+ntrc_diavrt
+     &                           +ntrc_diaek+ntrc_diapv+ntrc_diaeddy
+     &                                               +ntrc_surf+400)
+      parameter (indxbioVSink=indxbioFlux+NumFluxTerms)
 
 
       integer indxO, indxW, indxR, indxVisc, indxDiff, indxAkv, indxAkt
@@ -478,8 +521,16 @@
       parameter (indxAks=indxAkv+ntrc_temp+4)
       integer indxHbl
       parameter (indxHbl=indxAkv+ntrc_temp+5)
-      integer indxHbbl
-      parameter (indxHbbl=indxAkv+ntrc_temp+6)
+      integer indxTke
+      parameter (indxTke=indxAkv+ntrc_temp+7)
+      integer indxGls
+      parameter (indxGls=indxAkv+ntrc_temp+8)
+      integer indxLsc
+      parameter (indxLsc=indxAkv+ntrc_temp+9)
+      integer indxAkk
+      parameter (indxAkk=indxAkv+ntrc_temp+10)
+      integer indxAkp
+      parameter (indxAkp=indxAkv+ntrc_temp+11)
 
       integer indxSSH
 
@@ -488,8 +539,25 @@
       integer indxbvf
       parameter (indxbvf=indxSSH+1)
 
+      integer indxrufrc
+      parameter (indxrufrc=indxSSH+300)
+      integer indxrvfrc
+      parameter (indxrvfrc=indxrufrc+1)
       integer indxSUSTR, indxSVSTR
-      parameter (indxSUSTR=indxSSH+2, indxSVSTR=indxSSH+3)
+      integer indxdRdx,indxdRde
+      integer indxru_nbq,indxrv_nbq
+      integer indxru_nbq_avg2,indxrv_nbq_avg2
+      integer indxqdmu_nbq,indxqdmv_nbq
+      parameter (indxru_nbq=indxrvfrc+1,
+     &           indxrv_nbq=indxru_nbq+1,
+     &           indxru_nbq_avg2=indxrv_nbq+1,
+     &           indxrv_nbq_avg2=indxru_nbq_avg2+1,
+     &           indxqdmu_nbq=indxrv_nbq_avg2+1,
+     &           indxqdmv_nbq=indxqdmu_nbq+1)
+      parameter (indxdRdx=indxqdmv_nbq+1,
+     &           indxdRde=indxdRdx+1)
+      parameter (indxSUSTR=indxdRde+1,
+     &           indxSVSTR=indxdRde+2)
 
       integer indxTime2
       parameter (indxTime2=indxSSH+4)
@@ -552,7 +620,7 @@
      & r3dvar=4, u3dvar=5, v3dvar=6, p3dvar=7, w3dvar=8,
      & pw3dvar=11, b3dvar=12)
 !            Horizontal array dimensions in netCDF files.
-! xi_rho     WARNING!!! In  code in the case of PARALLEL_FILES
+! xi_rho     WARNING!!! In  code in the case of 
 ! xi_u       _and_ NON-Periodicity in either XI- or ETA-direction,
 ! eta_rho    these depend on corresonding -node indices ii,jj
 ! eta_v      and therefore become live variables, which are placed
@@ -561,14 +629,18 @@
 !
 ! Note (P. Marchesiello):
 !   the remark above is now extended to periodic conditions, i.e.,
-!   if PARALLEL_FILES is defined, netCDF files array dimensions are
+!   if  is defined, netCDF files array dimensions are
 !   always set in -Setup and depend on -nodes. After rejoining
 !   the parallel files (ncjoin), the resulting global netCDF file has
-!   the same dimension as it would have if PARALLEL_FILES was undefined.
+!   the same dimension as it would have if  was undefined.
 !
       integer xi_rho,xi_u, eta_rho,eta_v
-      parameter (xi_rho=LLm+2,  xi_u=xi_rho-1,
-     &           eta_rho=MMm+2, eta_v=eta_rho-1)
+!#  ifdef EW_PERIODIC
+!      parameter (xi_rho=Lm,     xi_u=Lm)
+!#  endif
+!#  ifdef NS_PERIODIC
+!      parameter (eta_rho=Mm,    eta_v=Mm)
+!#  endif
 !
 !====================================================================
 ! Naming conventions for indices, variable IDs, etc...
@@ -601,7 +673,7 @@
 !     occur with     ___Akv   vertical viscosity coefficient
 !     prefix indx    ___Akt   vertical T-diffusion coefficient
 !     (see above).   ___Aks   vertical S-diffusion coefficient
-!                    ___Hbl   depth of mixed layer .
+!                    ___Hbl   depth of mixed layer LMD_SKPP.
 !
 ! Sizes of unlimited time dimensions in netCDF files:
 !
@@ -633,8 +705,15 @@
      &      , rstTime, rstTime2, rstTstep, rstZ,    rstUb,  rstVb
      &                         , rstU,    rstV
       integer rstT(NT)
-      integer rstHbl
-      integer rstHbbl
+      integer rstAkv,rstAkt
+      integer rstAks
+      integer rstTke,rstGls
+      integer rstBustr, rstBvstr
+      integer rstrufrc,rstrvfrc
+      integer rstru_nbq,rstrv_nbq
+      integer rstru_nbq_avg2,rstrv_nbq_avg2
+      integer rstqdmu_nbq,rstqdmv_nbq
+      integer rstdRdx,rstdRde
 
       integer  ncidhis, nrechis,  nrpfhis
      &      , hisTime, hisTime2, hisTstep, hisZ,    hisUb,  hisVb
@@ -646,12 +725,19 @@
      &      , hisO,   hisW,   hisVisc, hisDiff
      &      , hisAkv, hisAkt, hisAks
      &      , hisbvf
+     &      , hisTke, hisGls, hisLsc
      &      , hisShflx_rlw
      &      , hisShflx_lat,   hisShflx_sen
+     &      , hisHel
       integer hisT(NT)
 
 
 
+      integer nciddiabio, nrecdiabio, nrpfdiabio
+     &      , diaTimebio, diaTime2bio, diaTstepbio
+     &      , diabioFlux(NumFluxTerms)
+     &      , diabioVSink(NumVSinkTerms)
+     &      , diabioGasExc(NumGasExcTerms)
 
 
       integer ncidavg, nrecavg,  nrpfavg
@@ -664,32 +750,58 @@
      &      , avgO,   avgW,   avgVisc, avgDiff
      &      , avgAkv, avgAkt, avgAks
      &      , avgbvf
+     &      , avgTke, avgGls, avgLsc
 
+     &      , avgHel
       integer avgT(NT)
       integer avgShflx_rlw
      &      , avgShflx_lat,   avgShflx_sen
 
 
 
+      integer nciddiabio_avg, nrecdiabio_avg, nrpfdiabio_avg
+     &      , diaTimebio_avg, diaTime2bio_avg, diaTstepbio_avg
+     &      , diabioFlux_avg(NumFluxTerms)
+     &      , diabioVSink_avg(NumVSinkTerms)
+     &      , diabioGasExc_avg(NumGasExcTerms)
 
 
 
       logical wrthis(1000+NT)
      &      , wrtavg(1000+NT)
+     &      , wrtdiabioFlux(NumFluxTerms+1)
+     &      , wrtdiabioVSink(NumVSinkTerms+1)
+     &      , wrtdiabioGasExc(NumGasExcTerms+1)
+     &      , wrtdiabioFlux_avg(NumFluxTerms+1)
+     &      , wrtdiabioVSink_avg(NumVSinkTerms+1)
+     &      , wrtdiabioGasExc_avg(NumGasExcTerms+1)
 
       common/incscrum/
      &     ncidfrc, ncidbulk,ncidclm, ncidqbar, ncidbtf
      &     , ntsms, ntsrf, ntssh, ntsst
      &     , ntuclm, ntsss, ntbulk, ntqbar, ntww
 
+!# ifndef EW_PERIODIC
+     &      , xi_rho,  xi_u
+!# endif
+!# ifndef NS_PERIODIC
+     &      , eta_rho, eta_v
+!# endif
      &     ,  nttclm, ntstf, nttsrc, ntbtf
 
      &      , ncidrst, nrecrst,  nrpfrst
      &      , rstTime, rstTime2, rstTstep, rstZ,    rstUb,  rstVb
      &                         , rstU,    rstV
      & ,   rstT
-     &      , rstHbl
-     &      , rstHbbl
+     &      , rstAkv,rstAkt
+     &      , rstAks
+     &      , rstTke,rstGls
+     &      , rstBustr,rstBvstr
+     &      , rstrufrc,rstrvfrc
+     &      , rstru_nbq,rstrv_nbq
+     &      , rstru_nbq_avg2,rstrv_nbq_avg2
+     &      , rstqdmu_nbq,rstqdmv_nbq
+     &      , rstdRdx,rstdRde
 
      &      , ncidhis, nrechis,  nrpfhis
      &      , hisTime, hisTime2, hisTstep, hisZ,    hisUb,  hisVb
@@ -703,8 +815,19 @@
      &      , hisAkv,  hisAkt,   hisAks
      &      , hisHbl,  hisHbbl
      &      , hisbvf
+     &      , hisTke, hisGls, hisLsc
      &      , hisShflx_rlw
      &      , hisShflx_lat, hisShflx_sen
+     &      , hisHel
+     &      , nciddiabio, nrecdiabio, nrpfdiabio
+     &      , diaTimebio, diaTime2bio, diaTstepbio, diabioFlux
+     &      , diabioVSink
+     &      , diabioGasExc
+     &      , nciddiabio_avg, nrecdiabio_avg, nrpfdiabio_avg
+     &      , diaTimebio_avg, diaTime2bio_avg, diaTstepbio_avg
+     &      , diabioFlux_avg
+     &      , diabioVSink_avg
+     &      , diabioGasExc_avg
 
      &      , ncidavg,  nrecavg,  nrpfavg
      &      , avgTime, avgTime2, avgTstep, avgZ,    avgUb,  avgVb
@@ -719,12 +842,20 @@
      &      , avgAkv,  avgAkt,   avgAks
      &      , avgHbl,  avgHbbl
      &      , avgbvf
+     &      , avgTke, avgGls, avgLsc
+     &      , avgHel
      &      , avgShflx_rlw
      &      , avgShflx_lat, avgShflx_sen
 
 
      &      , wrthis
      &      , wrtavg
+     &      , wrtdiabioFlux
+     &      , wrtdiabioVSink
+     &      , wrtdiabioGasExc
+     &      , wrtdiabioFlux_avg
+     &      , wrtdiabioVSink_avg
+     &      , wrtdiabioGasExc_avg
       character*80 date_str, title
       character*80 origin_date, start_date_run, xios_origin_date
       integer      start_day, start_month, start_year
@@ -739,7 +870,10 @@
      &         ,   qbarname, tsrcname
      &         ,   btfname
      &                                ,  avgname
-     &                                ,   bry_file
+     &                                ,  dianamebio
+     &                                ,  dianamebio_avg
+     &                                ,   clmname
+     &                                ,   bioname
 
       character*75  vname(20, 1000)
 
@@ -757,6 +891,9 @@
      &         ,   origin_day, origin_month, origin_year
      &         ,   origin_hour, origin_minute, origin_second
      &                                ,  avgname
-     &                                ,   bry_file
+     &                                ,  dianamebio
+     &                                ,  dianamebio_avg
+     &                                ,   clmname
+     &                                ,   bioname
      &                                ,   vname
       end module ncscrum

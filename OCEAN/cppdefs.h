@@ -1,11 +1,11 @@
 !======================================================================
-! CROCO is a branch of ROMS developped at IRD, INRIA, 
-! Ifremer, CNRS and Univ. Toulouse III  in France
+! MARCO is a branch of ROMS/CROCO developped at IRD, INRIA, 
+! Ifremer, CNRS and Univ. Toulouse III, IIT, IISC, Indian Univ.
 ! The two other branches from UCLA (Shchepetkin et al)
 ! and Rutgers University (Arango et al) are under MIT/X style license.
-! CROCO specific routines (nesting) are under CeCILL-C license.
+! MARCO specific routines (AGRIF) are under CeCILL-C license.
 !
-! CROCO website : http://www.croco-ocean.org
+! MARCO website : http://xxxx
 !======================================================================
 !
 /*
@@ -13,7 +13,7 @@
    ==== == ============ ===== ============= ====
 */
 /*
-        SELECT ACADEMIC TEST CASES
+        SELECT MARCO TEST CASES
 */
 #undef  BASIN           /* Basin Example */
 #undef  CANYON          /* Canyon Example */
@@ -73,7 +73,7 @@
 # undef  OPENMP
 # define  MPI
                       /* Non-hydrostatic option */
-# undef  NBQ
+# define  NBQ
 # undef  CROCO_QH
                       /* Nesting */
 # undef  AGRIF
@@ -94,7 +94,7 @@
 # define OBC_NORTH
 # define OBC_SOUTH
                       /* Applications */
-# undef  BIOLOGY
+# define  BIOLOGY
 # undef  FLOATS
 # undef  STATIONS
 # undef  PASSIVE_TRACER
@@ -116,12 +116,12 @@
 */
                       /* Parallelization */
 # ifdef MPI
-#  undef  PARALLEL_FILES
-#  undef  NC4PAR
-#  undef  MPI_NOLAND
-#  undef  MPI_TIME
+#  define  PARALLEL_FILES
+#  define  NC4PAR
+#  define  MPI_NOLAND
+#  define  MPI_TIME
 # endif
-# undef  AUTOTILING
+# define  AUTOTILING
                       /* Non-hydrostatic options */
 # ifdef NBQ
 #  define W_HADV_TVD
@@ -192,7 +192,7 @@
 # undef  SFLUX_CFB
 # undef  SEA_ICE_NOFLUX
                       /* Lateral Forcing */
-# undef CLIMATOLOGY
+# define CLIMATOLOGY
 # ifdef CLIMATOLOGY
 #  define ZCLIMATOLOGY
 #  define M2CLIMATOLOGY
@@ -206,7 +206,7 @@
 #  undef  ROBUST_DIAG
 # endif
 
-# define FRC_BRY
+# undef FRC_BRY
 # ifdef FRC_BRY
 #  define Z_FRC_BRY
 #  define M2_FRC_BRY
@@ -250,8 +250,8 @@
                       /* Vertical Mixing */
 # undef  BODYFORCE
 # undef  BVF_MIXING
-# define LMD_MIXING
-# undef  GLS_MIXING
+# undef LMD_MIXING
+# define  GLS_MIXING
 # ifdef LMD_MIXING
 #  define LMD_SKPP
 #  define LMD_BKPP
@@ -313,18 +313,18 @@
 # undef  OUTPUTS_SURFACE
 # undef  HOURLY_VELOCITIES
                      /* Exact restart */
-# undef EXACT_RESTART
+# define EXACT_RESTART
                       /* Parallel reproducibility or restartabilty test */
-# undef RVTK_DEBUG
+# define RVTK_DEBUG
 # undef RVTK_DEBUG_PERFRST
 # if defined RVTK_DEBUG && !defined RVTK_DEBUG_PERFRST
 !    Parallel reproducibility test
-#  undef RVTK_DEBUG_ADVANCED
+#  define RVTK_DEBUG_ADVANCED
 #  define XXXRVTK_DEBUG_READ
 # elif defined RVTK_DEBUG && defined RVTK_DEBUG_PERFRST
 !    Restartability test
 #  define EXACT_RESTART
-#  undef RVTK_DEBUG_ADVANCED
+#  define RVTK_DEBUG_ADVANCED
 #  define XXXRVTK_DEBUG_READ
 # endif
 !    RVTK test (Restartability or Parallel reproducibility)
@@ -393,18 +393,18 @@
 # endif
                       /*   Choice of Biology models   */
 # ifdef BIOLOGY
-#  undef  PISCES
+#  define  PISCES
 #  undef  BIO_NChlPZD
 #  undef  BIO_N2ChlPZD2
-#  define BIO_BioEBUS
+#  undef  BIO_BioEBUS
                       /*   Biology options    */
 #  ifdef PISCES
 #   undef  DIURNAL_INPUT_SRFLX
 #   define key_pisces
 #   define key_ligand
-#   undef key_pisces_quota
-#   undef key_pisces_npzd
-#   undef key_sediment
+#   define key_pisces_quota
+#   define key_pisces_npzd
+#   define key_sediment
 #  endif
 #  ifdef BIO_NChlPZD
 #   define OXYGEN

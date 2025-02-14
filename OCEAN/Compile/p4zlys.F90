@@ -14,7 +14,7 @@ MODULE p4zlys
    !!             3.4  !  2011-06  (O. Aumont, C. Ethe) Improvment of calcite dissolution
    !!             3.6  !  2015-05  (O. Aumont) PISCES quota
    !!             4.2  !  2020     (J. ORR )  rhop is replaced by "in situ density" rhd
-   !!             3.*  !  2025-02  (S. Maishal, R. Person) MPI and optimization
+   !!             4.*  !  2025-02  (S. Maishal, R. Person) MPI and optimization
 #if defined key_pisces
    !!----------------------------------------------------------------------
    !!   p4z_lys        :   Compute the CaCO3 dissolution 
@@ -24,7 +24,7 @@ MODULE p4zlys
    USE trc             !  passive tracers common variables 
    USE sms_pisces      !  PISCES Source Minus Sink variables
    USE p4zche          !  Chemical model
-   USE p4zsink         ! sinking of particles
+   USE p4zsink         !  sinking of particles
    USE prtctl          !  print control for debugging
    USE iom             !  I/O manager
 
@@ -38,13 +38,13 @@ MODULE p4zlys
    REAL(wp), PUBLIC ::   kdca   !: diss. rate constant calcite
    REAL(wp), PUBLIC ::   nca    !: order of reaction for calcite dissolution
 
-   INTEGER  :: rmtss              ! number of seconds per month 
+   INTEGER  :: rmtss            ! number of seconds per month 
    LOGICAL  :: l_dia
 
    !! * Module variables
    REAL(wp) :: calcon = 1.03E-2           !: mean calcite concentration [Ca2+]  in sea water [mole/kg solution]
    ! J. ORR: Made consistent with mocsy's choice based on literature review from Munhoven
-!   REAL(wp) :: calcon = 1.0287E-2           !: mean calcite concentration [Ca2+] in sea water [mole/kg solution]
+   !   REAL(wp) :: calcon = 1.0287E-2     !: mean calcite concentration [Ca2+] in sea water [mole/kg solution]
 
    !! * Substitutions
    !! * Substitutions
@@ -71,7 +71,7 @@ CONTAINS
       !!
       !! ** Method  : - ???
       !!---------------------------------------------------------------------
-      INTEGER, INTENT(in) ::   kt, knt   ! ocean time step and ???
+      INTEGER, INTENT(in) ::   kt, knt        ! ocean time step and ???
       INTEGER, INTENT(in)  ::  Kbb, Kmm, Krhs ! time level indices
       !
       INTEGER  ::   ji, jj, jk, jn
@@ -80,6 +80,7 @@ CONTAINS
       CHARACTER (len=25) ::   charout
       REAL(wp), DIMENSION(A2D(0),jpk) :: zhinit, zhi, zco3, zcaco3, ztra
       REAL(wp), ALLOCATABLE, DIMENSION(:,:,:)  :: zw3d, zcaldiss
+      INTEGER :: ik100
       !!---------------------------------------------------------------------
       !
       IF( ln_timing )  CALL timing_start('p2z_lys')

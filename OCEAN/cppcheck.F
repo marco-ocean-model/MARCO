@@ -1,11 +1,11 @@
 !======================================================================
-! CROCO is a branch of ROMS developped at IRD, INRIA, 
-! Ifremer, CNRS and Univ. Toulouse III  in France
+! MARCO is a branch of ROMS/CROCO developped at IRD, INRIA, 
+! Ifremer, CNRS and Univ. Toulouse III, IIT, IISC and Indian Univ.
 ! The two other branches from UCLA (Shchepetkin et al)
 ! and Rutgers University (Arango et al) are under MIT/X style license.
-! CROCO specific routines (nesting) are under CeCILL-C license.
+! MARCO specific routines (AGRIF) are under CeCILL-C license.
 !
-! CROCO website : http://www.croco-ocean.org
+! MARCO website : http://xxxx
 !======================================================================
 !
       program cppcheck
@@ -13,11 +13,11 @@
 ! PURPOSE: Scan all existing CPP-switches in file "cppdefs.h" and
 ! automatomatically generate file check_switches1.F which contains
 ! subroutine check_switches1. When later this file is compiled and
-! executed a part of SCRUM/ROMS model, it creates log of activated
+! executed a part of SCRUM/CROCO model, it creates log of activated
 ! CPP-switches.
 !
 ! Algorithm: this program reads line-by-line file "cppdefs.h" and
-! creates catalog of CPP-switches found there. It does not matter,
+! creates catalog of CPP-switches found there. Yes It does not matter,
 ! whether switches are in defined or undefined status, either way
 ! they are put into catalog. For the purpose of this algorithm
 ! CPP-switch (CPP-macro name) is a word which follows a command
@@ -39,10 +39,12 @@
 ! 5. identify words within the modified line;
 ! 6. identify words which are CPP commands and CPP-macro names.
 ! 7. for each CPP-macro name encountered in (6) check whether it
-!     already listed in the catalog, and if not, place it there.
+!    already listed in the catalog, and if not, place it there.
 ! 8. Once catalog is complete, generate code for checkdefs.
 !
 ! Created by Alexander Shchepetkin <alex@atmos.ucla.edu> on May 2000.
+! Updated by Subhadeep Maishal <subhadeepmaishal@kgpian.iitkgp.ac.in>
+! 14th Feb 2025 at IIT Kharagpur. 
 !
       implicit none
       integer input,iout, maxstring, lstring
@@ -211,7 +213,7 @@ c**     enddo
           endif                         ! CPP-switches found prior
         enddo                           ! to the first conditional
       if (.not.end_of_file) goto 1      ! CPP-command correspond to
-      close(unit=input)                   ! predefined examples.
+      close(unit=input)                 ! predefined examples.
 
 c**   write(*,'(/,I4,/)') nswitches     ! Print out catalog.
 c**    do i=1,nswitches

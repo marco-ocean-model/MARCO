@@ -10,13 +10,13 @@
 
 
 !======================================================================
-! CROCO is a branch of ROMS developped at IRD, INRIA, 
-! Ifremer, CNRS and Univ. Toulouse III  in France
+! MARCO is a branch of ROMS/CROCO developped at IRD, INRIA, 
+! Ifremer, CNRS and Univ. Toulouse III, IIT, IISC, Indian Univ.
 ! The two other branches from UCLA (Shchepetkin et al)
 ! and Rutgers University (Arango et al) are under MIT/X style license.
-! CROCO specific routines (nesting) are under CeCILL-C license.
+! MARCO specific routines (AGRIF) are under CeCILL-C license.
 !
-! CROCO website : http://www.croco-ocean.org
+! MARCO website : http://xxxx
 !======================================================================
 !
 
@@ -46,6 +46,7 @@
                       
 
                       
+
 
                       
                       
@@ -64,6 +65,7 @@
                       
                      
                       
+!    Parallel reproducibility test
 !    RVTK test (Restartability or Parallel reproducibility)
 
 
@@ -73,6 +75,8 @@
 
 
 
+                      
+                      
                       
                       
                       
@@ -90,6 +94,12 @@
 ! CROCO website : http://www.croco-ocean.org
 !======================================================================
 !
+
+
+
+
+
+
 
 
 
@@ -270,7 +280,7 @@
 MODULE par_pisces
    !!======================================================================
    !!                        ***  par_pisces  ***
-   !! TOP :   set the PISCES parameters
+   !! TOP :   set the  parameters
    !!======================================================================
    !! History :   2.0  !  2007-12  (C. Ethe, G. Madec)  revised architecture
    !!----------------------------------------------------------------------
@@ -289,21 +299,27 @@ MODULE par_pisces
    INTEGER, PUBLIC, PARAMETER ::   lc  = 256                          !: Lenght of Character strings
    INTEGER, PUBLIC, PARAMETER ::   lca = 400                          !: Lenght of Character arrays
 
+   !!---------------------------------------------------------------------
+   !!   'key_pisces'   :                         standard  bio-model
+   !!---------------------------------------------------------------------
+   LOGICAL, PUBLIC, PARAMETER ::   lk_pisces     = .TRUE.  !:  flag 
 
-   LOGICAL, PUBLIC, PARAMETER ::   lk_pisces     = .FALSE.  !: PISCES flag 
-   INTEGER, PUBLIC, PARAMETER ::   jp_pisces     = 0      !: number of PISCES passive tracers
-   INTEGER, PUBLIC, PARAMETER ::   jp_pisces_2d  = 0      !: additional 2d output ('key_trc_diaadd')
-   INTEGER, PUBLIC, PARAMETER ::   jp_pisces_3d  = 0      !: additional 3d output ('key_trc_diaadd')
-   !
-   INTEGER, PUBLIC ::   jpdic     !: dissolved inoganic carbon concentration 
-   INTEGER, PUBLIC ::   jptal     !: total alkalinity 
-   INTEGER, PUBLIC ::   jpoxy     !: oxygen carbon concentration 
-   INTEGER, PUBLIC ::   jppoc     !: small particulate organic phosphate concentration
-   INTEGER, PUBLIC ::   jpphy     !: phytoplancton concentration 
-   INTEGER, PUBLIC ::   jpzoo     !: zooplancton concentration
-   INTEGER, PUBLIC ::   jpdoc    !: dissolved organic carbon concentration 
-   INTEGER, PUBLIC ::   jpno3    !: Nitrates Concentration
-   INTEGER, PUBLIC ::   jpfer    !: Iron Concentration
+   INTEGER, PUBLIC, PARAMETER ::   jp_pisces     = 9      !: number of  passive tracers
+   INTEGER, PUBLIC, PARAMETER ::   jp_pisces_2d  = 11      !: additional 2d output ('key_trc_diaadd')
+   INTEGER, PUBLIC, PARAMETER ::   jp_pisces_3d  = 16      !: additional 3d output ('key_trc_diaadd')
+
+   ! assign an index in trc arrays for each LOBSTER prognostic variables
+   !    WARNING: be carefull about the order when reading the restart
+        !   !!gm  this warning should be obsolet with IOM
+   INTEGER, PUBLIC, PARAMETER ::   jpdic =  1    !: dissolved inoganic carbon concentration 
+   INTEGER, PUBLIC, PARAMETER ::   jptal =  2    !: total alkalinity 
+   INTEGER, PUBLIC, PARAMETER ::   jpoxy =  3    !: oxygen carbon concentration 
+   INTEGER, PUBLIC, PARAMETER ::   jppoc =  4    !: small particulate organic phosphate concentration
+   INTEGER, PUBLIC, PARAMETER ::   jpphy =  5    !: phytoplancton concentration 
+   INTEGER, PUBLIC, PARAMETER ::   jpzoo =  6    !: zooplancton concentration
+   INTEGER, PUBLIC, PARAMETER ::   jpdoc =  7   !: dissolved organic carbon concentration 
+   INTEGER, PUBLIC, PARAMETER ::   jpno3 =  8   !: Nitrates Concentration
+   INTEGER, PUBLIC, PARAMETER ::   jpfer =  9   !: Iron Concentration
    INTEGER, PUBLIC ::   jpcal     !: calcite  concentration 
    INTEGER, PUBLIC ::   jppo4     !: phosphate concentration 
    INTEGER, PUBLIC ::   jpsil     !: silicate concentration
@@ -335,6 +351,7 @@ MODULE par_pisces
    INTEGER, PUBLIC ::   jppch     !: small particulate organic phosphorus concentration
    INTEGER, PUBLIC ::   jpgon    !: GON concentration
    INTEGER, PUBLIC ::   jpgop    !: GOP concentration
+
 
    INTEGER, PUBLIC ::   jp_flxco2  
    INTEGER, PUBLIC ::   jp_flxo2   
@@ -374,10 +391,10 @@ MODULE par_pisces
    INTEGER, PUBLIC ::   jp_irondep  
    INTEGER, PUBLIC ::   jp_ironsed  
 
-   ! Starting/ending PISCES do-loop indices (N.B. no PISCES : jpl_pcs < jpf_pcs the do-loop are never done)
-   INTEGER, PUBLIC, PARAMETER ::   jptra       = jp_pisces                  !: First index of PISCES tracers
-   INTEGER, PUBLIC, PARAMETER ::   jp_pcs0     = 1                  !: First index of PISCES tracers
-   INTEGER, PUBLIC, PARAMETER ::   jp_pcs1     = jp_pisces          !: Last  index of PISCES tracers
+   ! Starting/ending  do-loop indices (N.B. no  : jpl_pcs < jpf_pcs the do-loop are never done)
+   INTEGER, PUBLIC, PARAMETER ::   jptra       = jp_pisces                  !: First index of  tracers
+   INTEGER, PUBLIC, PARAMETER ::   jp_pcs0     = 1                  !: First index of  tracers
+   INTEGER, PUBLIC, PARAMETER ::   jp_pcs1     = jp_pisces          !: Last  index of  tracers
 
    REAL(wp), PUBLIC ::  mMass_C  = 12.00      ! Molar mass of carbon
    REAL(wp), PUBLIC ::  mMass_N  = 14.00      ! Molar mass of nitrogen

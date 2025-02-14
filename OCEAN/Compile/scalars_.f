@@ -21,9 +21,14 @@
        real  tauT_in, tauT_out, tauM_in, tauM_out
       integer*4 numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
+     &     ,  forw_start
      &                                 , ntsavg,  navg
+      integer*4 nwrtdiabio
+      integer*4 ntsdiabio_avg, nwrtdiabio_avg
       logical ldefhis
       logical got_tini(NT)
+      logical ldefdiabio
+      logical ldefdiabio_avg
       common /scalars_main/
      &             time_avg, time2_avg,  rho0,      rdrg,    rdrg2
      &           , Zobt,       Cdb_min,   Cdb_max
@@ -37,15 +42,26 @@
      &                      , tauT_in, tauT_out, tauM_in, tauM_out
      &      , numthreads,     ntstart,   ntimes,  ninfo
      &      , nfast,  nrrec,     nrst,    nwrt
+     &       , forw_start
      &                                 , ntsavg,  navg
      &                      , got_tini
+     &                      , ldefdiabio, nwrtdiabio
+     &                      , ldefdiabio_avg
+     &                      , nwrtdiabio_avg
+     &                      , ntsdiabio_avg
      &                      , ldefhis
+      real Akv_bak
+      common /scalars_akv/ Akv_bak
+      real Akt_bak(NT)
+      common /scalars_akt/ Akt_bak
       logical synchro_flag
       common /sync_flag/ synchro_flag
       integer*4 may_day_flag
       integer*4 tile_count, first_time, bc_count
+     &      , bio_count
       common /communicators_i/
      &        may_day_flag, tile_count, first_time, bc_count
+     &      , bio_count
       real hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
       common /communicators_r/
      &     hmin, hmax, grdmin, grdmax, Cu_min, Cu_max
@@ -57,8 +73,10 @@
       common /diag_vars/ Cu_Adv3d,  Cu_W,
      &        i_cx_max, j_cx_max, k_cx_max
       real*8 volume, avgke, avgpe, avgkp, bc_crss
+     &        , global_sum(0:2*NT+1)
       common /communicators_rq/
      &          volume, avgke, avgpe, avgkp, bc_crss
+     &        , global_sum
       real*4 CPU_time(0:31,0:NPP)
       integer*4 proc(0:31,0:NPP),trd_count
       common /timers_roms/CPU_time,proc,trd_count

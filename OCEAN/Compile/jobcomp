@@ -380,7 +380,7 @@ rm -f flags.tmp
 $MAKE depend || exit 1
 $MAKE        || exit 2
   
-[[ -f MARCO  ]] && mv MARCO $RUNDIR
+[[ -f marco  ]] && mv marco $RUNDIR
 [[ -f partit ]] && mv partit $RUNDIR
 [[ -f ncjoin ]] && mv ncjoin  $RUNDIR
 #

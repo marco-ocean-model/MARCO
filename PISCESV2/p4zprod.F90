@@ -79,16 +79,19 @@ CONTAINS
       REAL(wp) ::   zratio, zratio2, zmax, zsilim, zlim, zsiborn
       REAL(wp) ::   zpptot, zpnewtot, zpregtot, zprochln, zprochld
       REAL(wp) ::   zproddoc, zprodsil, zprodfer, zprodlig, zprod1
-      REAL(wp) ::   zpislopen, zpisloped, zfact
+      REAL(wp) ::   zpislopen, zpisloped, zfact, xksi2_3
       REAL(wp) ::   zratiosi, zratiosi_4, zmaxsi, zlimfac, zlimfac3, zsizetmp, zfecnm, zfecdm
       REAL(wp) ::   zprod, zval, zmxl_fac_nano, zmxl_fac_diat, zmxl_chl, zpronewn, zpronewd
       REAL(wp) ::   zpislopeadn, zpislopeadd
       CHARACTER (len=25) :: charout
-      REAL(wp), DIMENSION(A2D(0),jpk) :: zprmax, zmxl, zysopt
-      REAL(wp), DIMENSION(A2D(0),jpk) :: zprdia, zprbio, zprchld, zprchln   
-      REAL(wp), DIMENSION(A2D(0),jpk) :: zprorcan, zprorcad
-      REAL(wp), DIMENSION(A2D(0),jpk) :: zprofed, zprofen
+      REAL(wp), DIMENSION(A2D(0), jpk) :: zprmax, zmxl, zysopt
+      !!!       
+      REAL(wp), DIMENSION(A2D(0), jpk) :: zprdia, zprbio, zprchld, zprchln, ratchln, ratchld
+      !!!   
+      REAL(wp), DIMENSION(A2D(0), jpk) :: zprorcan, zprorcad
+      REAL(wp), DIMENSION(A2D(0), jpk) :: zprofed, zprofen
       REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: zw3d
+
       !!---------------------------------------------------------------------
       !
       IF( ln_timing )   CALL timing_start('p4z_prod')
@@ -104,11 +107,16 @@ CONTAINS
       ENDIF
 
       ! Initialize the local arrays
-      zprorcan(:,:,:) = 0._wp    ;    zprorcad(:,:,:) = 0._wp
-      zprofen (:,:,:) = 0._wp    ;    zprofed (:,:,:) = 0._wp
-      zprchld (:,:,:) = 0._wp    ;    zprchln (:,:,:) = 0._wp 
-      zprbio  (:,:,:) = 0._wp    ;    zprdia  (:,:,:) = 0._wp 
-      zmxl    (:,:,:) = 0._wp    ;    zysopt  (:,:,:) = 0._wp
+      zprorcan(:,:,:) = 0._wp
+      zprorcad(:,:,:) = 0._wp
+      zprofen (:,:,:) = 0._wp
+      zprofed (:,:,:) = 0._wp
+      zprchld (:,:,:) = 0._wp
+      zprchln (:,:,:) = 0._wp 
+      zprbio  (:,:,:) = 0._wp
+      zprdia  (:,:,:) = 0._wp 
+      zmxl    (:,:,:) = 0._wp
+      zysopt  (:,:,:) = 0._wp
 
       ! Computation of the maximimum production. Based on a Q10 description
       ! of the thermal dependency. Parameters are taken from Bissinger et al. (2008)
@@ -320,9 +328,10 @@ CONTAINS
             !  production terms for nanophyto. ( chlorophyll )
             znanotot = enanom(ji,jj,jk) / ( zmxl_chl + rtrn )
             zprod1   = zprorcan(ji,jj,jk) * texcretn / ( tr(ji,jj,jk,jpphy,Kbb) + rtrn )
-            zprod    = zprod1 / ratchln(ji,jj,jk) * ( pislopen * znanotot / ( zprmax(ji,jj,jk) * rday ) &
+            zprod    = zprod1 / ratchln(ji,jj,jk) &
+              &        * ( pislopen * znanotot / ( zprmax(ji,jj,jk) * rday ) &
               &        * ( 1.0 - zprchln(ji,jj,jk) ) &
-              &         * MAX(0.0, (1.0 - ratchln(ji,jj,jk) * tr(ji,jj,jk,jpnch,Kbb)    &
+              &        * MAX(0.0, (1.0 - ratchln(ji,jj,jk) * tr(ji,jj,jk,jpnch,Kbb)    &
               &        / ( 12. * tr(ji,jj,jk,jpphy,Kbb) * xlimphy(ji,jj,jk) + rtrn ) ) ) &
               &        - ratchln(ji,jj,jk) * zprchln(ji,jj,jk) ) + zprod1
             zprochln = MAX(zprod * tr(ji,jj,jk,jpnch,Kbb) , chlcmin * 12 * zprorcan(ji,jj,jk) )
@@ -330,9 +339,10 @@ CONTAINS
             !  production terms for diatoms ( chlorophyll )
             zdiattot = ediatm(ji,jj,jk) / ( zmxl_chl + rtrn )
             zprod1   = zprorcad(ji,jj,jk) * texcretd / ( tr(ji,jj,jk,jpdia,Kbb) + rtrn )
-            zprod    = zprod1 / ratchld(ji,jj,jk) * ( pisloped * zdiattot / ( zprmax(ji,jj,jk) * rday ) &
+            zprod    = zprod1 / ratchld(ji,jj,jk) &
+              &        * ( pisloped * zdiattot / ( zprmax(ji,jj,jk) * rday ) &
               &        * ( 1.0 - zprchld(ji,jj,jk) ) &
-              &         * MAX(0.0, (1.0 - ratchld(ji,jj,jk) * tr(ji,jj,jk,jpdch,Kbb)    &
+              &        * MAX(0.0, (1.0 - ratchld(ji,jj,jk) * tr(ji,jj,jk,jpdch,Kbb)    &
               &        / ( 12. * tr(ji,jj,jk,jpdia,Kbb) * xlimdia(ji,jj,jk) + rtrn ) ) ) &
               &        - ratchld(ji,jj,jk) * zprchld(ji,jj,jk) ) + zprod1
             zprochld = MAX(zprod * tr(ji,jj,jk,jpdch,Kbb) , chlcmin * 12 * zprorcad(ji,jj,jk) )

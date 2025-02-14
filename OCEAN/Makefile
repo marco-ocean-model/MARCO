@@ -1,5 +1,5 @@
 #======================================================================
-# MARCO is a branch of ROMS developped at IRD, INRIA, 
+# MARCO is a branch of CROCO developped at IRD, INRIA, 
 # Ifremer, CNRS,  Univ. Toulouse III,  IIT, IISC and Indian Univ.  
 # The two other branches from UCLA (Shchepetkin et al)
 # and Rutgers University (Arango et al) are under MIT/X style license.
@@ -13,7 +13,7 @@
 #======================================================================
 # Set machine dependent definitions and rules.
 #======================================================================
-VERBOSE ?= 0
+#VERBOSE ?= 0
 include Makedefs
 #======================================================================
 # Model Configuration:
@@ -296,7 +296,7 @@ plotter: plotter.F
 
 #
 # Special treatment for barrier function:
-# THERE SHALL BE NO OPTIMIZATION HERE!!!!
+# !!!! THERE SHALL BE NO OPTIMIZATION HERE !!!!
 #
 my_barrier.o: my_barrier.f
 	$(CFT) -c -O0 my_barrier.f

@@ -96,10 +96,15 @@ CONTAINS
       REAL(wp) ::   zfact, zrfact2, zmaxsi, zratiosi, zratiosi_4
       REAL(wp) ::   zsizetmp, zlimfac, zlimfac3, zsilim
       REAL(wp) ::   zpislopeadn, zpislopeadp, zpislopeadd
+      !!!
+      REAL(wp) ::   xksi2_3
+      !!!
       CHARACTER (len=25) :: charout
       REAL(wp), DIMENSION(A2D(0),jpk) :: zprorcan, zprorcap, zprorcad
       REAL(wp), DIMENSION(A2D(0),jpk) :: zprnut, zprbio, zprpic, zprdia, zysopt
-      REAL(wp), DIMENSION(A2D(0),jpk) :: zprchln, zprchlp, zprchld
+      !!!
+      REAL(wp), DIMENSION(A2D(0),jpk) :: zprchln, zprchlp, zprchld, ratchln, ratchld
+      !!!
       REAL(wp), DIMENSION(A2D(0),jpk) :: zprofed, zprofep, zprofen
       REAL(wp), DIMENSION(A2D(0),jpk) :: zpronmaxn, zpronmaxp,zpronmaxd
       REAL(wp), DIMENSION(A2D(0),jpk) :: zpropmaxn, zpropmaxp,zpropmaxd
@@ -128,7 +133,7 @@ CONTAINS
       zpronmaxn(:,:,:) = 0._wp ; zpronmaxp(:,:,:) = 0._wp ; zpronmaxd(:,:,:) = 0._wp
       zpropmaxn(:,:,:) = 0._wp ; zpropmaxp(:,:,:) = 0._wp ; zpropmaxd(:,:,:) = 0._wp
       zmxl     (:,:,:) = 0._wp ; zysopt   (:,:,:) = 0._wp 
-      
+      ratchln  (:,:,:) = 1._wp ; zprchln  (:,:,:) = 0.5_wp
       ! Computation of the optimal production rates and nutrient uptake
       ! rates. Based on a Q10 description of the thermal dependency.
        zprnut (:,:,:) =  0.65_wp          * r1_rday * tgfunc(:,:,:)
@@ -467,9 +472,11 @@ CONTAINS
             zdiattot = ediatm(ji,jj,jk) / ( zmxl_chl + rtrn )
             zprod1   = ( zprorcad(ji,jj,jk) * texcretd - xpsinh4 * zproregd     &
               &        - xpsino3 * zpronewd ) / ( tr(ji,jj,jk,jpdia,Kbb) + rtrn )
-            zprod    = zprod1 / ratchld(ji,jj,jk) * ( pisloped * zdiattot / ( zprmaxd(ji,jj,jk) * rday ) &
+            zprod    = zprod1 / ratchld(ji,jj,jk) &
+              &        * ( pisloped * zdiattot / ( zprmaxd(ji,jj,jk) * rday ) &
               &        * ( 1.0 - zprchld(ji,jj,jk) ) &
-              &        * MAX(0.0, (1.0 - ratchld(ji,jj,jk) * tr(ji,jj,jk,jpdch,Kbb)   &
+              &        * MAX(0.0, (1.0 - ratchld(ji,jj,jk) &
+              &        * tr(ji,jj,jk,jpdch,Kbb) &
               &        / ( 12. * tr(ji,jj,jk,jpdia,Kbb) * xlimdia(ji,jj,jk) + rtrn ) ) ) &
               &        - ratchld(ji,jj,jk) * zprchld(ji,jj,jk) ) + zprod1
             zprochld = MAX(zprod * tr(ji,jj,jk,jpdch,Kbb) , chlcmin * 12 * zprorcad(ji,jj,jk) )
