@@ -42,7 +42,7 @@ MODULE p4zprod
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:,:) ::   quotan   !: proxy of N quota in Nanophyto
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:,:) ::   quotad   !: proxy of N quota in diatoms
    
-   REAL(wp) ::   r1_rday    ! 1 / rday
+   REAL(wp) ::   r1_rday    !! :)          1 / rday
    REAL(wp) ::   texcretn   ! 1 - excretn 
    REAL(wp) ::   texcretd   ! 1 - excretd        
 
