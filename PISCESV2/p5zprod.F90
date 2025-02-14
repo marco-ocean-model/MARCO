@@ -96,6 +96,7 @@ CONTAINS
       REAL(wp) ::   zfact, zrfact2, zmaxsi, zratiosi, zratiosi_4
       REAL(wp) ::   zsizetmp, zlimfac, zlimfac3, zsilim
       REAL(wp) ::   zpislopeadn, zpislopeadp, zpislopeadd
+      REAL(wp) ::   x-talk_:talk
       !!!
       REAL(wp) ::   xksi2_3
       !!!
