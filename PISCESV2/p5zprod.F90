@@ -10,6 +10,7 @@ MODULE p5zprod
    !!             2.0  !  2007-12  (C. Ethe, G. Madec)  F90
    !!             3.4  !  2011-05  (O. Aumont, C. Ethe) New parameterization of light limitation
    !!             3.6  !  2015-05  (O. Aumont) PISCES quota
+   !!             4.0  !  2025-02  (S. Maishal and R. Person) PARA Kick
 #if defined key_pisces
    !!----------------------------------------------------------------------
    !!   p5z_prod       :   Compute the growth Rate of the two phytoplanktons groups
