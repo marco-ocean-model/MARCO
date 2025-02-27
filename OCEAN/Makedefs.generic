@@ -20,7 +20,7 @@
 	$(CPP) -P $(CPPFLAGS) $*.F90 > $*_.f90
 .F90.o:
 	$(CPP) -P $(CPPFLAGS) $*.F90 > $*_.f90
-	$(CFT) -c $(FFLAGS90) $*_.f90 -o $*.o
+	$(CFT) -c $(FFLAGS90) $*.f90 -o $@ -J$(MODDIR) -M $(@:.o=.d)
 
 .F:
 	$(LDR) -o $@ $(LDFLAGS) $<
