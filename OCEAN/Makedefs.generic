@@ -19,9 +19,8 @@
 .F90.f90:
 	$(CPP) -P $(CPPFLAGS) $*.F90 > $*_.f90
 .F90.o:
-	$(CPP) -P $(CPPFLAGS) $*.F90 > $*_.f90
+	$(CPP) -P $(CPPFLAGS) $< > $*.f90
 	$(CFT) -c $(FFLAGS90) $*.f90 -o $@ -J$(MODDIR) -M $(@:.o=.d)
-
 .F:
 	$(LDR) -o $@ $(LDFLAGS) $<
 .f:
