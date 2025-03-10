@@ -42,7 +42,7 @@
 # endif
 
 !$acc enter data if(compute_on_device) copyin(h
-!$acc$ ,hinv,zeta
+!$acc& ,hinv,zeta
 !$acc& ,pm_u,pn_u,pm,pn,pn_v,pm_v
 !$acc& ,om_v,on_u,on_r,om_r,fomn,pnom_p,pmon_p,om_p,on_p
 !$acc& ,on_v,om_u
