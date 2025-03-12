@@ -176,18 +176,18 @@ CONTAINS
 !
         lvar = lenstr(vname(1,indxTime))
         ierr = nf_def_var (ncid, vname(1,indxTime)(1:lvar),           &
-        &                              NF_DOUBLE, 1, timedim, rstTime)
+        &                              NF_DOUBLE, 1, timedim, rstsedtime)
 #ifdef NC4PAR
-        ierr = nf_var_par_access(ncid,rstTime,nf_collective)
+        ierr = nf_var_par_access(ncid,rstsedtime,nf_collective)
 #endif
         lvar = lenstr(vname(2,indxTime))
-        ierr = nf_put_att_text (ncid, rstTime, 'long_name', lvar,     &
+        ierr = nf_put_att_text (ncid, rstsedtime, 'long_name', lvar,     &
         &                                  vname(2,indxTime)(1:lvar))
         lvar = lenstr(vname(3,indxTime))
-        ierr = nf_put_att_text (ncid, rstTime, 'units',     lvar,     &
+        ierr = nf_put_att_text (ncid, rstsedtime, 'units',     lvar,     &
         &                                  vname(3,indxTime)(1:lvar))
         lvar = lenstr (vname(4,indxTime))
-        ierr = nf_put_att_text(ncid, rstTime, 'field',     lvar,      &
+        ierr = nf_put_att_text(ncid, rstsedtime, 'field',     lvar,      &
         &                                  vname(4,indxTime)(1:lvar))
 
 !
@@ -195,18 +195,18 @@ CONTAINS
 !
         lvar = lenstr(vname(1,indxTime2))
         ierr = nf_def_var (ncid, vname(1,indxTime2)(1:lvar),            &
-        &                              NF_DOUBLE, 1, timedim, rstTime2)
+        &                              NF_DOUBLE, 1, timedim, rstsedtime2)
 #ifdef NC4PAR
-        ierr = nf_var_par_access(ncid,rstTime2,nf_collective)
+        ierr = nf_var_par_access(ncid,rstsedtime2,nf_collective)
 #endif
         lvar = lenstr(vname(2,indxTime2))
-        ierr = nf_put_att_text (ncid, rstTime2, 'long_name', lvar,     &
+        ierr = nf_put_att_text (ncid, rstsedtime2, 'long_name', lvar,     &
         &                                  vname(2,indxTime2)(1:lvar))
         lvar = lenstr(vname(3,indxTime2))
-        ierr = nf_put_att_text (ncid, rstTime2, 'units',     lvar,     &
+        ierr = nf_put_att_text (ncid, rstsedtime2, 'units',     lvar,     &
         &                                  vname(3,indxTime2)(1:lvar))
         lvar = lenstr (vname(4,indxTime2))
-        ierr = nf_put_att_text(ncid, rstTime2, 'field',     lvar,      &
+        ierr = nf_put_att_text(ncid, rstsedtime2, 'field',     lvar,      &
         &                                  vname(4,indxTime2)(1:lvar))
 
 !
@@ -336,7 +336,7 @@ CONTAINS
 ! Time.
 !
         lvar = lenstr(vname(1,indxTime))
-        ierr = nf_inq_varid (ncid, vname(1,indxTime)(1:lvar), rstTime)
+        ierr = nf_inq_varid (ncid, vname(1,indxTime)(1:lvar), rstsedtime)
         IF (ierr .NE. nf_noerr) THEN
           WRITE(stdout,1) vname(1,indxTime)(1:lvar), TRIM(cn_sedrst_out)
           GOTO 99                                         !--> ERROR
@@ -345,7 +345,7 @@ CONTAINS
 ! Time2.
 !
         lvar = lenstr(vname(1,indxTime2))
-        ierr = nf_inq_varid (ncid, vname(1,indxTime2)(1:lvar), rstTime2)
+        ierr = nf_inq_varid (ncid, vname(1,indxTime2)(1:lvar), rstsedtime2)
         IF (ierr .NE. nf_noerr) THEN
           WRITE(stdout,1) vname(1,indxTime2)(1:lvar), TRIM(cn_sedrst_out)
           GOTO 99                                         !--> ERROR
@@ -470,7 +470,7 @@ CONTAINS
 !
 ! Time.
 !
-      ierr = nf_put_var1_FTYPE (ncidsedrst, rstTime, record, time)
+      ierr = nf_put_var1_FTYPE (ncidsedrst, rstsedtime, record, time)
       IF (ierr .NE. nf_noerr) THEN
          lvar = lenstr(vname(1,indxTime))
          WRITE(stdout,1) vname(1,indxTime)(1:lvar), record, ierr
@@ -851,3 +851,4 @@ CONTAINS
 #endif
 
 END MODULE sedrst
+
