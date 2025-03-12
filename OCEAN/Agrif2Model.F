@@ -69,6 +69,6 @@
 !$AGRIF_END_DO_NOT_TREAT
 #else
       subroutine Agrif2Model
-         write(*,*) 'Impossible to bet here'
+       write(*,*) 'Impossible to bet here'
       end subroutine Agrif2model
 #endif
